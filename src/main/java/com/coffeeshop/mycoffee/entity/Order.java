@@ -6,46 +6,46 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
+@Table(name = "`order`") // Escape the table name with backticks
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    @Column(name = "username", unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
-    String username;
+    @Column(name = "`table`") // Escape the column name using backticks
+    int table;
 
-    String password;
-    String firstname;
-    String lastname;
-    LocalDate dob;
-    String phone;
-    int point;
-
-    @ManyToMany
-    Set<Role> roles;
+    int used_point;
+    float total_price;
 
     @OneToOne(
-            // indicates that this is the child side of a
-            // relationship and refers to the field in the Driver
-            // class that defines the relationship there
-            mappedBy = "user"
+            // a car will only be retrieved from the database when
+            // it is explicitly accessed
+            fetch = FetchType.LAZY,
+            // you must specify a Car before you save the Driver
+            optional = false,
+            // all save/persist operations will be propagated
+            // through to the Car
+            cascade = CascadeType.PERSIST
     )
-    Order order;
+    Payment payment;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<Order> orders;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    List<OrderDetail> orderDetails;
 
     // Tự động cập nhật khi tạo bản ghi
     @CreatedDate
