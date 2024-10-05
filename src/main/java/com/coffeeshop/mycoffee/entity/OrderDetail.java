@@ -6,46 +6,29 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
-@Entity
+@Entity // Escape the table name with backticks
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    @Column(name = "username", unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
-    String username;
+    int quantity;
 
-    String password;
-    String firstname;
-    String lastname;
-    LocalDate dob;
-    String phone;
-    int point;
-
-    @ManyToMany
-    Set<Role> roles;
-
-    @OneToOne(
-            // indicates that this is the child side of a
-            // relationship and refers to the field in the Driver
-            // class that defines the relationship there
-            mappedBy = "user"
-    )
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     Order order;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<Order> orders;
+    @ManyToOne
+    @JoinColumn(name = "produc_id")
+    Product product;
 
     // Tự động cập nhật khi tạo bản ghi
     @CreatedDate

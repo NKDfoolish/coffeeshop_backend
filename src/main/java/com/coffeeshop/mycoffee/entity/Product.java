@@ -5,47 +5,34 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class) // Lắng nghe sự kiện tạo và cập nhật
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    @Column(name = "username", unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
-    String username;
+    String name;
 
-    String password;
-    String firstname;
-    String lastname;
-    LocalDate dob;
-    String phone;
-    int point;
+    float price;
 
-    @ManyToMany
-    Set<Role> roles;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    Category category;
 
-    @OneToOne(
-            // indicates that this is the child side of a
-            // relationship and refers to the field in the Driver
-            // class that defines the relationship there
-            mappedBy = "user"
-    )
-    Order order;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<Order> orders;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    List<OrderDetail> orderDetails;
 
     // Tự động cập nhật khi tạo bản ghi
     @CreatedDate
@@ -55,4 +42,12 @@ public class User {
     // Tự động cập nhật khi bản ghi thay đổi
     @LastModifiedDate
     LocalDateTime updatedAt;
+
+    // Cột để lưu trữ thời gian khi thực hiện xóa mềm
+    LocalDateTime deletedAt;
+
+    // Hàm để xóa mềm (chỉ cập nhật deletedAt thay vì xóa khỏi DB)
+    public void softDelete() {
+        this.deletedAt = LocalDateTime.now();
+    }
 }
