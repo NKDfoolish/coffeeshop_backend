@@ -1,8 +1,8 @@
 package com.coffeeshop.mycoffee.controller;
 
 import com.coffeeshop.mycoffee.dto.ApiResponse;
-import com.coffeeshop.mycoffee.dto.request.RoleRequest;
-import com.coffeeshop.mycoffee.dto.response.RoleResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.RoleRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.RoleResponse;
 import com.coffeeshop.mycoffee.service.RoleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

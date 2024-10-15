@@ -1,4 +1,4 @@
-package com.coffeeshop.mycoffee.dto.request;
+package com.coffeeshop.mycoffee.dto.userdto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionRequest {
-    String name;
-    String description;
+public class RefreshRequest {
+    String token;
 }

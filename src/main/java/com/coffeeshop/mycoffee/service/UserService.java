@@ -1,9 +1,9 @@
 package com.coffeeshop.mycoffee.service;
 
 import com.coffeeshop.mycoffee.constant.PredefinedRole;
-import com.coffeeshop.mycoffee.dto.request.UserCreationRequest;
-import com.coffeeshop.mycoffee.dto.request.UserUpdateRequest;
-import com.coffeeshop.mycoffee.dto.response.UserResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.UserCreationRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.UserUpdateRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.UserResponse;
 import com.coffeeshop.mycoffee.entity.Role;
 import com.coffeeshop.mycoffee.entity.User;
 import com.coffeeshop.mycoffee.exception.AppException;

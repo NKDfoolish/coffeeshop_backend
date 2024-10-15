@@ -1,9 +1,9 @@
 package com.coffeeshop.mycoffee.controller;
 
 import com.coffeeshop.mycoffee.dto.ApiResponse;
-import com.coffeeshop.mycoffee.dto.request.UserCreationRequest;
-import com.coffeeshop.mycoffee.dto.request.UserUpdateRequest;
-import com.coffeeshop.mycoffee.dto.response.UserResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.UserCreationRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.UserUpdateRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.UserResponse;
 import com.coffeeshop.mycoffee.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -57,8 +57,10 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    UserResponse updateUser(@PathVariable("userId") String userId, @RequestBody UserUpdateRequest request) {
-        return userService.updateUser(userId, request);
+    ApiResponse<UserResponse> updateUser(@PathVariable("userId") String userId, @RequestBody UserUpdateRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updateUser(userId, request))
+                .build();
     }
 
     @DeleteMapping("/{userId}")

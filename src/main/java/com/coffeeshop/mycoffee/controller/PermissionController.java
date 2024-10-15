@@ -1,8 +1,8 @@
 package com.coffeeshop.mycoffee.controller;
 
 import com.coffeeshop.mycoffee.dto.ApiResponse;
-import com.coffeeshop.mycoffee.dto.request.PermissionRequest;
-import com.coffeeshop.mycoffee.dto.response.PermissionResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.PermissionRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.PermissionResponse;
 import com.coffeeshop.mycoffee.service.PermissionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

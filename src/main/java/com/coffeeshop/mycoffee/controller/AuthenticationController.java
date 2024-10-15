@@ -1,12 +1,12 @@
 package com.coffeeshop.mycoffee.controller;
 
 import com.coffeeshop.mycoffee.dto.ApiResponse;
-import com.coffeeshop.mycoffee.dto.request.AuthenticationRequest;
-import com.coffeeshop.mycoffee.dto.request.IntrospectRequest;
-import com.coffeeshop.mycoffee.dto.request.LogoutRequest;
-import com.coffeeshop.mycoffee.dto.request.RefreshRequest;
-import com.coffeeshop.mycoffee.dto.response.AuthenticationResponse;
-import com.coffeeshop.mycoffee.dto.response.IntrospectResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.AuthenticationRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.IntrospectRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.LogoutRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.RefreshRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.AuthenticationResponse;
+import com.coffeeshop.mycoffee.dto.userdto.response.IntrospectResponse;
 import com.coffeeshop.mycoffee.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;

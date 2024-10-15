@@ -1,17 +1,14 @@
-package com.coffeeshop.mycoffee.dto.request;
+package com.coffeeshop.mycoffee.dto.userdto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleRequest {
+public class PermissionResponse {
     String name;
     String description;
-    Set<String> permissions;
 }

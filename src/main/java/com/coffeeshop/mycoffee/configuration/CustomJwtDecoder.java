@@ -1,6 +1,6 @@
 package com.coffeeshop.mycoffee.configuration;
 
-import com.coffeeshop.mycoffee.dto.request.IntrospectRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.IntrospectRequest;
 import com.coffeeshop.mycoffee.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Autowired;

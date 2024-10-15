@@ -1,11 +1,11 @@
 package com.coffeeshop.mycoffee.service;
 
-import com.coffeeshop.mycoffee.dto.request.AuthenticationRequest;
-import com.coffeeshop.mycoffee.dto.request.IntrospectRequest;
-import com.coffeeshop.mycoffee.dto.request.LogoutRequest;
-import com.coffeeshop.mycoffee.dto.request.RefreshRequest;
-import com.coffeeshop.mycoffee.dto.response.AuthenticationResponse;
-import com.coffeeshop.mycoffee.dto.response.IntrospectResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.AuthenticationRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.IntrospectRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.LogoutRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.RefreshRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.AuthenticationResponse;
+import com.coffeeshop.mycoffee.dto.userdto.response.IntrospectResponse;
 import com.coffeeshop.mycoffee.entity.InvalidatedToken;
 import com.coffeeshop.mycoffee.entity.User;
 import com.coffeeshop.mycoffee.exception.AppException;
@@ -118,7 +118,10 @@ public class AuthenticationService {
 
         var token = generateToken(user);
 
-        return AuthenticationResponse.builder().token(token).authenticated(true).build();
+        return AuthenticationResponse.builder()
+                .token(token)
+                .authenticated(true)
+                .build();
     }
 
     private SignedJWT verifyToken(String token, boolean isRefresh) throws JOSEException, ParseException {

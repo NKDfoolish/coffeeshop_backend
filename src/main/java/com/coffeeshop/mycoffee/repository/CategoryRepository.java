@@ -9,6 +9,9 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, String> {
+
+    boolean existsByName(String name);
+
     // Tìm tất cả các Category chưa bị xóa mềm
     @Query("SELECT c FROM Category c WHERE c.deletedAt IS NULL")
     List<Category> findAllActiveCategories();

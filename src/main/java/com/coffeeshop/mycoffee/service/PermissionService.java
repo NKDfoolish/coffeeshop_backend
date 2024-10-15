@@ -1,7 +1,7 @@
 package com.coffeeshop.mycoffee.service;
 
-import com.coffeeshop.mycoffee.dto.request.PermissionRequest;
-import com.coffeeshop.mycoffee.dto.response.PermissionResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.PermissionRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.PermissionResponse;
 import com.coffeeshop.mycoffee.entity.Permission;
 import com.coffeeshop.mycoffee.mapper.PermissionMapper;
 import com.coffeeshop.mycoffee.repository.PermissionRepository;

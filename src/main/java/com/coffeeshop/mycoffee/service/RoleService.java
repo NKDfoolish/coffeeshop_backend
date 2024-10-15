@@ -1,7 +1,7 @@
 package com.coffeeshop.mycoffee.service;
 
-import com.coffeeshop.mycoffee.dto.request.RoleRequest;
-import com.coffeeshop.mycoffee.dto.response.RoleResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.RoleRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.RoleResponse;
 import com.coffeeshop.mycoffee.mapper.RoleMapper;
 import com.coffeeshop.mycoffee.repository.PermissionRepository;
 import com.coffeeshop.mycoffee.repository.RoleRepository;

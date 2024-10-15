@@ -1,7 +1,7 @@
 package com.coffeeshop.mycoffee.mapper;
 
-import com.coffeeshop.mycoffee.dto.request.RoleRequest;
-import com.coffeeshop.mycoffee.dto.response.RoleResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.RoleRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.RoleResponse;
 import com.coffeeshop.mycoffee.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

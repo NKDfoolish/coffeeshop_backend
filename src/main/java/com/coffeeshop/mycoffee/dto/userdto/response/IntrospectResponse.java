@@ -1,4 +1,4 @@
-package com.coffeeshop.mycoffee.dto.request;
+package com.coffeeshop.mycoffee.dto.userdto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,6 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RefreshRequest {
-    String token;
+public class IntrospectResponse {
+    boolean valid;
 }

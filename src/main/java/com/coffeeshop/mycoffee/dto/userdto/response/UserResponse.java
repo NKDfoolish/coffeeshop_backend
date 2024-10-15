@@ -1,4 +1,4 @@
-package com.coffeeshop.mycoffee.dto.response;
+package com.coffeeshop.mycoffee.dto.userdto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
