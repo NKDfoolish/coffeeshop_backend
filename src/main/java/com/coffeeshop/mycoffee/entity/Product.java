@@ -23,6 +23,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @Column(name = "name", unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
     String name;
 
     float price;
