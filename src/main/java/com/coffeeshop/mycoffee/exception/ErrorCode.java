@@ -18,7 +18,9 @@ public enum ErrorCode {
     CATEGORY_EXISTED(1009, "Category existed", HttpStatus.BAD_REQUEST),
     CATEGORY_NOT_EXISTED(1010, "Category not existed", HttpStatus.NOT_FOUND),
     PRODUCT_EXISTED(1011, "Product existed", HttpStatus.BAD_REQUEST),
-    PRODUCT_NOT_EXISTED(1012, "Product not existed", HttpStatus.NOT_FOUND);
+    PRODUCT_NOT_EXISTED(1012, "Product not existed", HttpStatus.NOT_FOUND),
+    PAYMENT_EXISTED(1013, "Payment existed", HttpStatus.BAD_REQUEST),
+    PAYMENT_NOT_EXISTED(1014, "Payment not existed", HttpStatus.NOT_FOUND);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
