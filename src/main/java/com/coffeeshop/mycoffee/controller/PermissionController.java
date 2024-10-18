@@ -4,6 +4,7 @@ import com.coffeeshop.mycoffee.dto.ApiResponse;
 import com.coffeeshop.mycoffee.dto.userdto.request.PermissionRequest;
 import com.coffeeshop.mycoffee.dto.userdto.response.PermissionResponse;
 import com.coffeeshop.mycoffee.service.PermissionService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ public class PermissionController {
     PermissionService permissionService;
 
     @PostMapping
-    ApiResponse<PermissionResponse> create(@RequestBody PermissionRequest request) {
+    ApiResponse<PermissionResponse> create(@RequestBody @Valid PermissionRequest request) {
         return ApiResponse.<PermissionResponse>builder()
                 .result(permissionService.create(request))
                 .build();

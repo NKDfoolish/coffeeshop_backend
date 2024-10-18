@@ -38,7 +38,7 @@ public class PaymentController {
     }
 
     @PutMapping("/{paymentId}")
-    ApiResponse<PaymentResponse> updatePayment(@PathVariable("paymentId") String paymentId, @RequestBody PaymentUpdateRequest request){
+    ApiResponse<PaymentResponse> updatePayment(@PathVariable("paymentId") String paymentId, @RequestBody @Valid PaymentUpdateRequest request){
         return ApiResponse.<PaymentResponse>builder()
                 .result(paymentService.updatePayment(paymentId, request))
                 .build();

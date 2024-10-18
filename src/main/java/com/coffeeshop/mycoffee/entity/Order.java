@@ -25,7 +25,7 @@ public class Order {
     @Column(name = "`table`") // Escape the column name using backticks
     int table;
 
-    int used_point;
+    int used_point = 0;
     float total_price;
 
     @OneToOne(
