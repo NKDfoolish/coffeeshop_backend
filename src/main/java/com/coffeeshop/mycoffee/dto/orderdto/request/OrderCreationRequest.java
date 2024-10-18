@@ -19,8 +19,4 @@ public class OrderCreationRequest {
 
     @NotNull(message = "Table is required")
     int table;
-
-    @NotNull(message = "Total price is required")
-    @Positive(message = "Total price must be greater than 0")
-    float totalPrice;
 }

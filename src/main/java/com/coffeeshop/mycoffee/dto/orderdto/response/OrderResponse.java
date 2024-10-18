@@ -1,5 +1,7 @@
 package com.coffeeshop.mycoffee.dto.orderdto.response;
 
+import com.coffeeshop.mycoffee.entity.Payment;
+import com.coffeeshop.mycoffee.entity.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

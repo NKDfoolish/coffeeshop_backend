@@ -29,16 +29,12 @@ public class PaymentService {
 
     @PreAuthorize("hasRole('ADMIN')")
     public PaymentResponse createPayment(PaymentCreationRequest request){
-        if (paymentRepository.existsByType(request.getType())){
-            throw new AppException(ErrorCode.PAYMENT_EXISTED);
-        }
-
         Payment payment = paymentMapper.toPayment(request);
 
         try {
             payment = paymentRepository.save(payment);
         }catch (DataIntegrityViolationException e){
-            throw new AppException(ErrorCode.PRODUCT_EXISTED);
+            throw new AppException(ErrorCode.PAYMENT_EXISTED);
         }
 
         return paymentMapper.toPaymentResponse(payment);

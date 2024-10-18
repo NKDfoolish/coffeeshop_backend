@@ -38,13 +38,13 @@ public class User {
     @ManyToMany
     Set<Role> roles;
 
-    @OneToOne(
-            // indicates that this is the child side of a
-            // relationship and refers to the field in the Driver
-            // class that defines the relationship there
-            mappedBy = "user"
-    )
-    Order order;
+//    @OneToOne(
+//            // indicates that this is the child side of a
+//            // relationship and refers to the field in the Driver
+//            // class that defines the relationship there
+//            mappedBy = "user"
+//    )
+//    Order order;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Order> orders;
