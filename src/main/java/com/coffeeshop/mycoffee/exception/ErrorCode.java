@@ -22,7 +22,9 @@ public enum ErrorCode {
     PAYMENT_EXISTED(1013, "Payment existed", HttpStatus.BAD_REQUEST),
     PAYMENT_NOT_EXISTED(1014, "Payment not existed", HttpStatus.NOT_FOUND),
     ORDER_EXISTED(1015, "Order existed", HttpStatus.BAD_REQUEST),
-    ORDER_NOT_EXISTED(1016, "Order not existed", HttpStatus.NOT_FOUND);
+    ORDER_NOT_EXISTED(1016, "Order not existed", HttpStatus.NOT_FOUND),
+    ORDER_DETAIL_EXISTED(1017, "Order detail existed", HttpStatus.BAD_REQUEST),
+    ORDER_DETAIL_NOT_EXISTED(1018, "Order detail not existed", HttpStatus.NOT_FOUND);
 
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

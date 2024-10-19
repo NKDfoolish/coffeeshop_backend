@@ -4,8 +4,6 @@ import com.coffeeshop.mycoffee.dto.ApiResponse;
 import com.coffeeshop.mycoffee.dto.orderdto.request.OrderCreationRequest;
 import com.coffeeshop.mycoffee.dto.orderdto.request.OrderUpdateRequest;
 import com.coffeeshop.mycoffee.dto.orderdto.response.OrderResponse;
-import com.coffeeshop.mycoffee.dto.paymentdto.request.PaymentUpdateRequest;
-import com.coffeeshop.mycoffee.dto.paymentdto.response.PaymentResponse;
 import com.coffeeshop.mycoffee.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
