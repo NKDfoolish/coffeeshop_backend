@@ -24,12 +24,8 @@ public class Payment {
     String type;
     String status;
 
-    @OneToOne(
-            // indicates that this is the child side of a
-            // relationship and refers to the field in the Driver
-            // class that defines the relationship there
-            mappedBy = "payment"
-    )
+    @OneToOne
+    @JoinColumn(name = "order_id")
     Order order;
 
     // Tự động cập nhật khi tạo bản ghi

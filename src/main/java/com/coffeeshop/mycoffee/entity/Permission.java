@@ -2,8 +2,11 @@ package com.coffeeshop.mycoffee.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
 
 @Entity
 @Getter
@@ -17,4 +20,7 @@ public class Permission {
     String name;
 
     String description;
+
+    @ManyToMany(mappedBy = "permissions")
+    Set<Role> roles;
 }

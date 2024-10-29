@@ -32,7 +32,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     Category category;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
     List<OrderDetail> orderDetails;
 
     // Tự động cập nhật khi tạo bản ghi

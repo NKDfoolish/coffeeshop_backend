@@ -30,23 +30,15 @@ public class Order {
     int used_point = 0;
     float total_price;
 
-    @OneToOne(
-            // a car will only be retrieved from the database when
-            // it is explicitly accessed
-            fetch = FetchType.LAZY,
-            // you must specify a Car before you save the Driver
-            optional = false,
-            // all save/persist operations will be propagated
-            // through to the Car
-            cascade = CascadeType.PERSIST
-    )
+    @OneToOne
+    @JoinColumn(name = "payment_id")
     Payment payment;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order")
     List<OrderDetail> orderDetails;
 
     // Tự động cập nhật khi tạo bản ghi

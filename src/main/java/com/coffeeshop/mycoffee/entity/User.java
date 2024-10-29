@@ -36,17 +36,14 @@ public class User {
     int point;
 
     @ManyToMany
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_name")
+    )
     Set<Role> roles;
 
-//    @OneToOne(
-//            // indicates that this is the child side of a
-//            // relationship and refers to the field in the Driver
-//            // class that defines the relationship there
-//            mappedBy = "user"
-//    )
-//    Order order;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     List<Order> orders;
 
     // Tự động cập nhật khi tạo bản ghi

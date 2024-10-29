@@ -26,7 +26,7 @@ public class Category {
     @Column(name = "name", unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
     String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category")
     List<Product> products;
 
     // Tự động cập nhật khi tạo bản ghi
