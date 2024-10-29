@@ -31,5 +31,5 @@ public class Payment {
     // Tự động cập nhật khi tạo bản ghi
     @CreatedDate
     @Column(updatable = false) // Không cho phép cập nhật sau khi tạo
-            LocalDateTime createdAt;
+    LocalDateTime createdAt;
 }

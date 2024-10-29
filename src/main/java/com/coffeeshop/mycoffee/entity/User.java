@@ -49,7 +49,7 @@ public class User {
     // Tự động cập nhật khi tạo bản ghi
     @CreatedDate
     @Column(updatable = false) // Không cho phép cập nhật sau khi tạo
-            LocalDateTime createdAt;
+    LocalDateTime createdAt;
 
     // Tự động cập nhật khi bản ghi thay đổi
     @LastModifiedDate
