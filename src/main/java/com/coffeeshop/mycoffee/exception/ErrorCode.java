@@ -26,7 +26,8 @@ public enum ErrorCode {
     ORDER_DETAIL_EXISTED(1017, "Order detail existed", HttpStatus.BAD_REQUEST),
     ORDER_DETAIL_NOT_EXISTED(1018, "Order detail not existed", HttpStatus.NOT_FOUND),
     INVALID_IMAGE(1019, "Image is empty", HttpStatus.BAD_REQUEST),
-    IMAGE_SAVE_FAILED(1020, "Image save failed",HttpStatus.INTERNAL_SERVER_ERROR);
+    IMAGE_SAVE_FAILED(1020, "Image save failed",HttpStatus.INTERNAL_SERVER_ERROR),
+    IMAGE_NOT_FOUND(1021, "Image not found", HttpStatus.NOT_FOUND);
 
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 @Service
@@ -112,9 +113,15 @@ public class ProductService {
         Files.createDirectories(imagePath.getParent());
 
         // Save the image file
-        Files.write(imagePath, imageFile.getBytes());
+        Files.write(imagePath, imageFile.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+        product.setImageUrl(imagePath.toString());
+        productRepository.save(product);
 
         // Return the image URL or path
         return imagePath.toString();
     }
+
 }

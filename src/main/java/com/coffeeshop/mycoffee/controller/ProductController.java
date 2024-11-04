@@ -32,9 +32,12 @@ public class ProductController {
     ProductService productService;
 
     @PostMapping
-    ApiResponse<ProductResponse> createProduct(@RequestBody @Valid ProductCreationRequest request) {
+    ApiResponse<ProductResponse> createProduct(@RequestBody @Valid ProductCreationRequest request) throws IOException {
+
+        ProductResponse productResponse = productService.createProduct(request);
+
         return ApiResponse.<ProductResponse>builder()
-                .result(productService.createProduct(request))
+                .result(productResponse)
                 .build();
     }
 
@@ -53,7 +56,12 @@ public class ProductController {
     }
 
     @PostMapping("/{productId}/image")
-    ApiResponse<String> uploadProductImage(@PathVariable("productId") String productId, @RequestParam("image") MultipartFile imageFile) {
+    ApiResponse<String> uploadProductImage(@PathVariable("productId") String productId, @RequestParam(value = "image", required = false) MultipartFile imageFile) {
+
+        if (imageFile == null || imageFile.isEmpty()) {
+            throw new AppException(ErrorCode.IMAGE_NOT_FOUND);
+        }
+
         try {
             String imagePath = productService.saveProductImage(imageFile, productId);
             return ApiResponse.<String>builder()
