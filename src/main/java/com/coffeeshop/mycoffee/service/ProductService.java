@@ -17,7 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -31,7 +36,7 @@ public class ProductService {
     CategoryRepository categoryRepository;
 
     @PreAuthorize("hasRole('ADMIN')")
-    public ProductResponse createProduct(ProductCreationRequest request){
+    public ProductResponse createProduct(ProductCreationRequest request) {
         if (productRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.PRODUCT_EXISTED);
         }
@@ -41,6 +46,11 @@ public class ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
 
         product.setCategory(category);
+
+//        if (imageFile != null && !imageFile.isEmpty()) {
+//            String imageUrl = saveProductImage(imageFile, product.getId());
+//            product.setImageUrl(imageUrl);
+//        }
 
         try {
             product = productRepository.save(product);
@@ -57,7 +67,7 @@ public class ProductService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    public ProductResponse updateProduct(String productId, ProductUpdateRequest request){
+    public ProductResponse updateProduct(String productId, ProductUpdateRequest request) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
         // Cập nhật `name` nếu `request.name` không phải là null
@@ -77,11 +87,34 @@ public class ProductService {
             product.setCategory(category);
         }
 
+//        if (imageFile != null && !imageFile.isEmpty()) {
+//            String imageUrl = saveProductImage(imageFile, productId);
+//            product.setImageUrl(imageUrl);
+//        }
+
         return productMapper.toProductResponse(productRepository.save(product));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteProduct(String productId){
         productRepository.deleteById(productId);
+    }
+
+    public String saveProductImage(MultipartFile imageFile, String productId) throws IOException {
+        if (imageFile.isEmpty()) {
+            throw new AppException(ErrorCode.INVALID_IMAGE);
+        }
+
+        // Define the path where the image will be saved
+        Path imagePath = Paths.get("images/products/" + productId + ".jpg");
+
+        // Create directories if they do not exist
+        Files.createDirectories(imagePath.getParent());
+
+        // Save the image file
+        Files.write(imagePath, imageFile.getBytes());
+
+        // Return the image URL or path
+        return imagePath.toString();
     }
 }
