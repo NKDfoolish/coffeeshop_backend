@@ -1,9 +1,6 @@
 package com.coffeeshop.mycoffee.service;
 
-import com.coffeeshop.mycoffee.dto.userdto.request.AuthenticationRequest;
-import com.coffeeshop.mycoffee.dto.userdto.request.IntrospectRequest;
-import com.coffeeshop.mycoffee.dto.userdto.request.LogoutRequest;
-import com.coffeeshop.mycoffee.dto.userdto.request.RefreshRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.*;
 import com.coffeeshop.mycoffee.dto.userdto.response.AuthenticationResponse;
 import com.coffeeshop.mycoffee.dto.userdto.response.IntrospectResponse;
 import com.coffeeshop.mycoffee.entity.InvalidatedToken;
@@ -69,7 +66,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        log.info("SignKey: {}", SIGNER_KEY);
+
         var user = userRepository
                 .findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
@@ -81,6 +78,21 @@ public class AuthenticationService {
         if (!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         var token = generateToken(user);
+
+        return AuthenticationResponse.builder().token(token).authenticated(true).build();
+    }
+
+    public AuthenticationResponse authenticateByPhone(AuthenticationByPhoneRequest request) {
+
+        var user = userRepository
+                .findByPhone(request.getPhone())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        boolean authenticated = user.getPhone().equals(request.getPhone()); // auto true
+
+        if (!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
+
+        var token = generateTokenForCustomer(user);
 
         return AuthenticationResponse.builder().token(token).authenticated(true).build();
     }
@@ -124,6 +136,29 @@ public class AuthenticationService {
                 .build();
     }
 
+    public AuthenticationResponse refreshTokenForCustomer(RefreshRequest request) throws ParseException, JOSEException {
+        var signedJWT = verifyToken(request.getToken(), true);
+        var jti = signedJWT.getJWTClaimsSet().getJWTID();
+        var expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        InvalidatedToken invalidatedToken =
+                InvalidatedToken.builder().id(jti).expiryTime(expiryTime).build();
+
+        invalidatedTokenRepository.save(invalidatedToken);
+
+        var phone = signedJWT.getJWTClaimsSet().getSubject();
+
+        var user =
+                userRepository.findByPhone(phone).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+
+        var token = generateTokenForCustomer(user);
+
+        return AuthenticationResponse.builder()
+                .token(token)
+                .authenticated(true)
+                .build();
+    }
+
     private SignedJWT verifyToken(String token, boolean isRefresh) throws JOSEException, ParseException {
 
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
@@ -154,6 +189,32 @@ public class AuthenticationService {
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
+                .issuer("nkd.com")
+                .issueTime(new Date())
+                .expirationTime(new Date(
+                        Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli()))
+                .jwtID(UUID.randomUUID().toString())
+                .claim("scope", buildScope(user))
+                .build();
+
+        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+
+        JWSObject jwsObject = new JWSObject(header, payload);
+
+        try {
+            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+            return jwsObject.serialize();
+        } catch (JOSEException e) {
+            log.error("Cannot create token", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String generateTokenForCustomer(User user) {
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+
+        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                .subject(user.getPhone())
                 .issuer("nkd.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(

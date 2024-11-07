@@ -1,13 +1,16 @@
 package com.coffeeshop.mycoffee.service;
 
 import com.coffeeshop.mycoffee.constant.PredefinedRole;
+import com.coffeeshop.mycoffee.dto.userdto.request.UserCreationByPhoneRequest;
 import com.coffeeshop.mycoffee.dto.userdto.request.UserCreationRequest;
 import com.coffeeshop.mycoffee.dto.userdto.request.UserUpdateRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.UserByPhoneResponse;
 import com.coffeeshop.mycoffee.dto.userdto.response.UserResponse;
 import com.coffeeshop.mycoffee.entity.Role;
 import com.coffeeshop.mycoffee.entity.User;
 import com.coffeeshop.mycoffee.exception.AppException;
 import com.coffeeshop.mycoffee.exception.ErrorCode;
+import com.coffeeshop.mycoffee.mapper.UserByPhoneMapper;
 import com.coffeeshop.mycoffee.mapper.UserMapper;
 import com.coffeeshop.mycoffee.repository.RoleRepository;
 import com.coffeeshop.mycoffee.repository.UserRepository;
@@ -35,6 +38,7 @@ public class UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
+    UserByPhoneMapper userByPhoneMapper;
 
     public UserResponse createUser(UserCreationRequest request) {
         log.info("Service: create-user");
@@ -58,6 +62,26 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    public UserByPhoneResponse createUserByPhone(UserCreationByPhoneRequest request){
+
+        if (userRepository.existsByPhone(request.getPhone())) throw new AppException(ErrorCode.USER_EXISTED);
+
+        User user = userByPhoneMapper.toUser(request);
+
+        HashSet<Role> roles = new HashSet<>();
+        roleRepository.findById(PredefinedRole.CUSTOMER_ROLE).ifPresent(roles::add);
+
+        user.setRoles(roles);
+
+        try {
+            user = userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+
+        return userByPhoneMapper.toUserByPhoneResponse(user);
+    }
+
     public UserResponse getMyInfo() {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
@@ -68,7 +92,7 @@ public class UserService {
     }
 
     //    @PreAuthorize("hasAuthority('APPROVE_POST')")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getUsers() {
         log.info("In method get Users");
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();

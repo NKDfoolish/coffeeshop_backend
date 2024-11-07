@@ -1,10 +1,7 @@
 package com.coffeeshop.mycoffee.controller;
 
 import com.coffeeshop.mycoffee.dto.ApiResponse;
-import com.coffeeshop.mycoffee.dto.userdto.request.AuthenticationRequest;
-import com.coffeeshop.mycoffee.dto.userdto.request.IntrospectRequest;
-import com.coffeeshop.mycoffee.dto.userdto.request.LogoutRequest;
-import com.coffeeshop.mycoffee.dto.userdto.request.RefreshRequest;
+import com.coffeeshop.mycoffee.dto.userdto.request.*;
 import com.coffeeshop.mycoffee.dto.userdto.response.AuthenticationResponse;
 import com.coffeeshop.mycoffee.dto.userdto.response.IntrospectResponse;
 import com.coffeeshop.mycoffee.service.AuthenticationService;
@@ -33,6 +30,12 @@ public class AuthenticationController {
         return ApiResponse.<AuthenticationResponse>builder().result(result).build();
     }
 
+    @PostMapping("/tokenForCustomer")
+    ApiResponse<AuthenticationResponse> authenticateForCustomer(@RequestBody @Valid AuthenticationByPhoneRequest request) {
+        var result = authenticationService.authenticateByPhone(request);
+        return ApiResponse.<AuthenticationResponse>builder().result(result).build();
+    }
+
     @PostMapping("/introspect")
     ApiResponse<IntrospectResponse> authenticate(@RequestBody @Valid IntrospectRequest request)
             throws ParseException, JOSEException {
@@ -50,6 +53,13 @@ public class AuthenticationController {
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody @Valid RefreshRequest request)
             throws ParseException, JOSEException {
         var result = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder().result(result).build();
+    }
+
+    @PostMapping("/refreshForCustomer")
+    ApiResponse<AuthenticationResponse> authenticateForCustomer(@RequestBody @Valid RefreshRequest request)
+            throws ParseException, JOSEException {
+        var result = authenticationService.refreshTokenForCustomer(request);
         return ApiResponse.<AuthenticationResponse>builder().result(result).build();
     }
 }

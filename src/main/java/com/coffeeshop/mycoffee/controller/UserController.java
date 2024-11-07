@@ -1,8 +1,10 @@
 package com.coffeeshop.mycoffee.controller;
 
 import com.coffeeshop.mycoffee.dto.ApiResponse;
+import com.coffeeshop.mycoffee.dto.userdto.request.UserCreationByPhoneRequest;
 import com.coffeeshop.mycoffee.dto.userdto.request.UserCreationRequest;
 import com.coffeeshop.mycoffee.dto.userdto.request.UserUpdateRequest;
+import com.coffeeshop.mycoffee.dto.userdto.response.UserByPhoneResponse;
 import com.coffeeshop.mycoffee.dto.userdto.response.UserResponse;
 import com.coffeeshop.mycoffee.service.UserService;
 import jakarta.validation.Valid;
@@ -27,6 +29,13 @@ public class UserController {
     ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.createUser(request))
+                .build();
+    }
+
+    @PostMapping("/createUserByPhone")
+    ApiResponse<UserByPhoneResponse> createUserByPhone(@RequestBody @Valid UserCreationByPhoneRequest request) {
+        return ApiResponse.<UserByPhoneResponse>builder()
+                .result(userService.createUserByPhone(request))
                 .build();
     }
 
