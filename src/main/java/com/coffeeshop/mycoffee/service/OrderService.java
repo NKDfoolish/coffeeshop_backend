@@ -12,6 +12,8 @@ import com.coffeeshop.mycoffee.mapper.OrderMapper;
 import com.coffeeshop.mycoffee.repository.OrderRepository;
 import com.coffeeshop.mycoffee.repository.PaymentRepository;
 import com.coffeeshop.mycoffee.repository.UserRepository;
+import com.coffeeshop.mycoffee.util.QRCodeGenerator;
+import com.google.zxing.WriterException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,6 +23,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -104,5 +109,25 @@ public class OrderService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteOrder(String orderId){
         orderRepository.deleteById(orderId);
+    }
+
+    public void generateQRCodesForAllTables(int numberOfTables) {
+        for (int i = 1; i <= numberOfTables; i++) {
+            generateTableQRCode(i);
+        }
+    }
+
+    public void generateTableQRCode(int tableNumber) {
+        String qrCodeText = "https://yourwebsite.com/menu?table=" + tableNumber;
+        String qrCodePath = "images/qrcodes/table_" + tableNumber + ".png";
+        try {
+            // Create directories if they do not exist
+            Files.createDirectories(Paths.get("images/qrcodes"));
+
+            QRCodeGenerator.generateQRCodeImage(qrCodeText, 350, 350, qrCodePath);
+        } catch (WriterException | IOException e) {
+            log.error("Error generating QR code for table " + tableNumber, e);
+            throw new AppException(ErrorCode.QR_CODE_GENERATION_FAILED);
+        }
     }
 }
