@@ -26,6 +26,7 @@ public class SecurityConfig {
         "/users/**",
         "/auth/**",
         "/images/products/**",
+        "/order/**",
     };
 
     @Value("${jwt.signerKey}")
