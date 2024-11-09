@@ -13,11 +13,18 @@ import com.coffeeshop.mycoffee.repository.ProductRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectAclRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,6 +42,12 @@ public class ProductService {
     ProductRepository productRepository;
     ProductMapper productMapper;
     CategoryRepository categoryRepository;
+    S3Client s3Client;
+
+    @Value("${amazonProperties.bucketName}")
+    @NonFinal
+    private String BUCKET_NAME;
+
 
     @PreAuthorize("hasRole('ADMIN')")
     public ProductResponse createProduct(ProductCreationRequest request) {
@@ -106,22 +119,48 @@ public class ProductService {
             throw new AppException(ErrorCode.INVALID_IMAGE);
         }
 
-        // Define the path where the image will be saved
-        Path imagePath = Paths.get("images/products/" + productId + ".jpg");
+        String key = "products/" + productId + ".jpg";
+        String fullPath = "https://coffeeshopuit.s3.ap-northeast-1.amazonaws.com/" + key;
 
-        // Create directories if they do not exist
-        Files.createDirectories(imagePath.getParent());
+        // Ensure the directory exists
+        Path tempDir = Paths.get("images/temp");
+        if (!Files.exists(tempDir)) {
+            Files.createDirectories(tempDir);
+        }
 
-        // Save the image file
-        Files.write(imagePath, imageFile.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        // Save the file to a temporary location
+        Path tempFile = Files.createTempFile(tempDir, "temp", imageFile.getOriginalFilename());
+        Files.write(tempFile, imageFile.getBytes(), StandardOpenOption.CREATE);
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
-        product.setImageUrl(imagePath.toString());
-        productRepository.save(product);
+        try {
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(BUCKET_NAME)
+                    .key(key)
+                    .acl("public-read")
+                    .build();
 
-        // Return the image URL or path
-        return imagePath.toString();
+            PutObjectResponse response = s3Client.putObject(putObjectRequest,
+                    RequestBody.fromFile(tempFile));
+
+            if (response.sdkHttpResponse().isSuccessful()) {
+                Product product = productRepository.findById(productId)
+                        .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+                product.setImageUrl(fullPath);
+                productRepository.save(product);
+
+                // Delete the temporary file
+                Files.delete(tempFile);
+
+                return s3Client.utilities().getUrl(builder -> builder.bucket(BUCKET_NAME).key(key)).toExternalForm();
+            } else {
+                log.error("Failed to upload image to S3. Response: {}", response);
+                throw new AppException(ErrorCode.IMAGE_SAVE_FAILED);
+            }
+        }
+        catch (Exception e) {
+            log.error("Error saving product image to S3", e);
+            throw new AppException(ErrorCode.IMAGE_SAVE_FAILED);
+        }
     }
 
 }
