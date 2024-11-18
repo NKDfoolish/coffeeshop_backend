@@ -1,6 +1,5 @@
 package com.coffeeshop.mycoffee.configuration;
 
-import com.coffeeshop.mycoffee.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +28,12 @@ public class SecurityConfig {
         "/auth/**",
         "/images/products/**",
         "/order/**",
+        "api/auth/**",
+        "/v3/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/swagger-resources/**",
+        "/webjars/**",
     };
 
     @Value("${jwt.signerKey}")
