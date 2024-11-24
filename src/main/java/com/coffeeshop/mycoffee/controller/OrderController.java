@@ -5,6 +5,8 @@ import com.coffeeshop.mycoffee.dto.orderdto.request.OrderCreationRequest;
 import com.coffeeshop.mycoffee.dto.orderdto.request.OrderUpdateRequest;
 import com.coffeeshop.mycoffee.dto.orderdto.response.OrderResponse;
 import com.coffeeshop.mycoffee.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +22,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
+@Tag(name = "Order", description = "APIs for order")
 public class OrderController {
 
     OrderService orderService;
 
+    @Operation(summary = "Create a new order")
     @PostMapping
     ApiResponse<OrderResponse> createOrder(@RequestBody @Valid OrderCreationRequest request){
         return ApiResponse.<OrderResponse>builder()
@@ -31,6 +35,7 @@ public class OrderController {
                 .build();
     }
 
+    @Operation(summary = "Get all orders")
     @GetMapping
     ApiResponse<List<OrderResponse>> getOrders(){
         return ApiResponse.<List<OrderResponse>>builder()
@@ -38,6 +43,7 @@ public class OrderController {
                 .build();
     }
 
+    @Operation(summary = "Update an order by ID")
     @PutMapping("/{orderId}")
     ApiResponse<OrderResponse> updateOrder(@PathVariable("orderId") String orderId, @RequestBody @Valid OrderUpdateRequest request){
         return ApiResponse.<OrderResponse>builder()
@@ -45,6 +51,7 @@ public class OrderController {
                 .build();
     }
 
+    @Operation(summary = "Delete an order by ID")
     @DeleteMapping("/{orderId}")
     ApiResponse<String> deletePayment(@PathVariable("orderId") String orderId){
 
@@ -54,6 +61,7 @@ public class OrderController {
                 .build();
     }
 
+    @Operation(summary = "Generate QR codes for all tables")
     @PostMapping("/generate-qrcodes")
     public ApiResponse<String> generateQRCodesForAllTables(@RequestParam int numberOfTables) {
         orderService.generateQRCodesForAllTables(numberOfTables);

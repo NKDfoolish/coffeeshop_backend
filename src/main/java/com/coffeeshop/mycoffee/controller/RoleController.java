@@ -4,6 +4,8 @@ import com.coffeeshop.mycoffee.dto.ApiResponse;
 import com.coffeeshop.mycoffee.dto.userdto.request.RoleRequest;
 import com.coffeeshop.mycoffee.dto.userdto.response.RoleResponse;
 import com.coffeeshop.mycoffee.service.RoleService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
+@Tag(name = "Role", description = "APIs for role")
 public class RoleController {
     RoleService roleService;
 
+    @Operation(summary = "Create a new role")
     @PostMapping
     ApiResponse<RoleResponse> create(@RequestBody @Valid RoleRequest request) {
         return ApiResponse.<RoleResponse>builder()
@@ -28,6 +32,7 @@ public class RoleController {
                 .build();
     }
 
+    @Operation(summary = "Get all roles")
     @GetMapping
     ApiResponse<List<RoleResponse>> getAll() {
         return ApiResponse.<List<RoleResponse>>builder()
@@ -35,6 +40,7 @@ public class RoleController {
                 .build();
     }
 
+    @Operation(summary = "Delete a role by name")
     @DeleteMapping("/{role}")
     ApiResponse<Void> delete(@PathVariable String role) {
         roleService.delete(role);

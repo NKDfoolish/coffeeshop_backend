@@ -11,6 +11,8 @@ import com.coffeeshop.mycoffee.exception.AppException;
 import com.coffeeshop.mycoffee.exception.ErrorCode;
 import com.coffeeshop.mycoffee.service.CategoryService;
 import com.coffeeshop.mycoffee.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +29,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
+@Tag(name = "Product", description = "APIs for product")
 public class ProductController {
 
     ProductService productService;
 
+    @Operation(summary = "Create a new product")
     @PostMapping
     ApiResponse<ProductResponse> createProduct(@RequestBody @Valid ProductCreationRequest request) throws IOException {
 
@@ -41,6 +45,7 @@ public class ProductController {
                 .build();
     }
 
+    @Operation(summary = "Get all products")
     @GetMapping
     ApiResponse<List<ProductResponse>> getProducts(){
         return ApiResponse.<List<ProductResponse>>builder()
@@ -48,6 +53,7 @@ public class ProductController {
                 .build();
     }
 
+    @Operation(summary = "Update a product by ID")
     @PutMapping("/{productId}")
     ApiResponse<ProductResponse> updateProduct(@PathVariable("productId") String productId, @RequestBody @Valid ProductUpdateRequest request) {
         return ApiResponse.<ProductResponse>builder()
@@ -55,6 +61,7 @@ public class ProductController {
                 .build();
     }
 
+    @Operation(summary = "Upload an image for a product")
     @PostMapping("/{productId}/image")
     ApiResponse<String> uploadProductImage(@PathVariable("productId") String productId, @RequestParam(value = "image", required = false) MultipartFile imageFile) {
 
@@ -73,6 +80,7 @@ public class ProductController {
         }
     }
 
+    @Operation(summary = "Delete a product by ID")
     @DeleteMapping("/{productId}")
     ApiResponse<String> deleteProduct(@PathVariable("productId") String productId){
 
