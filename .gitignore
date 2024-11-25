@@ -32,6 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
+### application files ###
+./src/main/resources/application.yaml
+
 ### docker
 docker-compose.yml
 
