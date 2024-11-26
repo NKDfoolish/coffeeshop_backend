@@ -28,6 +28,7 @@ public class Product {
 
     float price;
 
+    @Column(name = "image_url")
     String imageUrl;
 
     @ManyToOne

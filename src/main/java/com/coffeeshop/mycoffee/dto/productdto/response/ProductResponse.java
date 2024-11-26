@@ -1,6 +1,7 @@
 package com.coffeeshop.mycoffee.dto.productdto.response;
 
 import com.coffeeshop.mycoffee.dto.categorydto.response.CategoryResponse;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,4 +20,7 @@ public class ProductResponse {
     String createdAt;
     String updatedAt;
     String deletedAt;
+
+    @JsonProperty("image_url")
+    String imageUrl;
 }
