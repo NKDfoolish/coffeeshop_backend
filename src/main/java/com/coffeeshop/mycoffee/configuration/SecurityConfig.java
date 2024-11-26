@@ -34,6 +34,14 @@ public class SecurityConfig {
         "/swagger-ui.html",
         "/swagger-resources/**",
         "/webjars/**",
+            "product/**",
+            "category/**",
+            "order/**",
+            "order-detail/**",
+            "payment/**",
+            "users/**",
+            "roles/**",
+            "permissions/**",
     };
 
     @Value("${jwt.signerKey}")
