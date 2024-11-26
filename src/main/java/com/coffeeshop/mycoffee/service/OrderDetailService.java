@@ -33,7 +33,7 @@ public class OrderDetailService {
     OrderRepository orderRepository;
     ProductRepository productRepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public OrderDetailResponse createOrderDetail(OrderDetailCreationRequest request){
         Order order = orderRepository.findById(request.getOrderId())
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
@@ -60,7 +60,7 @@ public class OrderDetailService {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<OrderDetailResponse> getOrderDetails(){
         return orderDetailRepository.findAll().stream().map(orderDetail ->
                 OrderDetailResponse.builder()
@@ -70,7 +70,7 @@ public class OrderDetailService {
                         .build()).toList();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public OrderDetailResponse updateOrderDetail(String orderDetailId, OrderDetailUpdateRequest request){
         OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_DETAIL_NOT_EXISTED));
@@ -101,7 +101,7 @@ public class OrderDetailService {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public void deleteOrderDetail(String orderDetailId){
         orderDetailRepository.deleteById(orderDetailId);
     }

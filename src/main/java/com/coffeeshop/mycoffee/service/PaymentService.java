@@ -27,7 +27,7 @@ public class PaymentService {
     PaymentRepository paymentRepository;
     PaymentMapper paymentMapper;
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public PaymentResponse createPayment(PaymentCreationRequest request){
         Payment payment = paymentMapper.toPayment(request);
 
@@ -40,12 +40,12 @@ public class PaymentService {
         return paymentMapper.toPaymentResponse(payment);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<PaymentResponse> getPayments(){
         return paymentRepository.findAll().stream().map(paymentMapper::toPaymentResponse).toList();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public PaymentResponse updatePayment(String paymentId, PaymentUpdateRequest request){
         Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new AppException(ErrorCode.PAYMENT_NOT_EXISTED));
 
@@ -57,7 +57,7 @@ public class PaymentService {
         return paymentMapper.toPaymentResponse(paymentRepository.save(payment));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public void deletePayment(String paymentId){
         paymentRepository.deleteById(paymentId);
     }

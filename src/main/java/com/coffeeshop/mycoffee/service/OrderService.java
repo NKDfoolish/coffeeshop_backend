@@ -39,7 +39,7 @@ public class OrderService {
     UserRepository userRepository;
     PaymentRepository paymentRepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public OrderResponse createOrder(OrderCreationRequest request){
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
@@ -69,7 +69,7 @@ public class OrderService {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<OrderResponse> getOrders(){
         return orderRepository.findAll().stream().map(order ->
             OrderResponse.builder()
@@ -81,7 +81,7 @@ public class OrderService {
         ).toList();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public OrderResponse updateOrder(String orderId, OrderUpdateRequest request){
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
@@ -106,7 +106,7 @@ public class OrderService {
                 .build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public void deleteOrder(String orderId){
         orderRepository.deleteById(orderId);
     }

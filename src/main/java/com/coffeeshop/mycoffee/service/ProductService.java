@@ -49,7 +49,7 @@ public class ProductService {
     private String BUCKET_NAME;
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponse createProduct(ProductCreationRequest request) {
         if (productRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.PRODUCT_EXISTED);
@@ -75,12 +75,12 @@ public class ProductService {
         return productMapper.toProductResponse(product);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<ProductResponse> getProducts(){
         return productRepository.findAll().stream().map(productMapper::toProductResponse).toList();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponse updateProduct(String productId, ProductUpdateRequest request) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
@@ -109,7 +109,7 @@ public class ProductService {
         return productMapper.toProductResponse(productRepository.save(product));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public void deleteProduct(String productId){
         productRepository.deleteById(productId);
     }
