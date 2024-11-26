@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderResponse {
 
+    String orderId;
     String userId;
 
 //    String paymentId;

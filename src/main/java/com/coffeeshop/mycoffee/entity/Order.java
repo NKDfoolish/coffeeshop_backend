@@ -34,9 +34,9 @@ public class Order {
     @JoinColumn(name = "payment_id")
     Payment payment;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    User user;
 
     @OneToMany(mappedBy = "order")
     List<OrderDetail> orderDetails;

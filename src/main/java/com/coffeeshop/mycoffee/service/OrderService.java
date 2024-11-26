@@ -41,18 +41,18 @@ public class OrderService {
 
 //    @PreAuthorize("hasRole('ADMIN')")
     public OrderResponse createOrder(OrderCreationRequest request){
-        var context = SecurityContextHolder.getContext();
-        String name = context.getAuthentication().getName();
-        log.info("name: {}", name);
-
-        User user = userRepository.findByUsername(name)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        Payment payment = paymentRepository.findById(request.getPaymentId())
-                .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_NOT_EXISTED));
+//        var context = SecurityContextHolder.getContext();
+//        String name = context.getAuthentication().getName();
+//        log.info("name: {}", name);
+//
+//        User user = userRepository.findByUsername(name)
+//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+//        Payment payment = paymentRepository.findById(request.getPaymentId())
+//                .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_NOT_EXISTED));
 
         Order order = orderMapper.toOrder(request);
-        order.setUser(user);
-        order.setPayment(payment);
+//        order.setUser(user);
+//        order.setPayment(payment);
 
         try {
             order = orderRepository.save(order);
@@ -61,8 +61,9 @@ public class OrderService {
         }
 
         return OrderResponse.builder()
-                .userId(user.getId())
-                .paymentId(payment.getId())
+//                .userId(user.getId())
+//                .paymentId(payment.getId())
+                .orderId(order.getId())
                 .table(order.getTable())
                 .totalPrice(order.getTotal_price())
                 .build();
@@ -74,9 +75,9 @@ public class OrderService {
         return orderRepository.findAll().stream().map(order ->
             OrderResponse.builder()
                     .totalPrice(order.getTotal_price())
-                    .userId(order.getUser().getId())
+//                    .userId(order.getUser().getId())
                     .table(order.getTable())
-                    .paymentId(order.getPayment().getId())
+//                    .paymentId(order.getPayment().getId())
                     .build()
         ).toList();
     }
@@ -99,9 +100,9 @@ public class OrderService {
         Order orderResult = orderRepository.save(order);
 
         return OrderResponse.builder()
-                .paymentId(orderResult.getPayment().getId())
+//                .paymentId(orderResult.getPayment().getId())
                 .table(orderResult.getTable())
-                .userId(orderResult.getUser().getId())
+//                .userId(orderResult.getUser().getId())
                 .totalPrice(order.getTotal_price())
                 .build();
     }

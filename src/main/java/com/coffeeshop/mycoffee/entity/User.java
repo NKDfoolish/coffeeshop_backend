@@ -43,8 +43,8 @@ public class User {
     )
     Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
-    List<Order> orders;
+//    @OneToMany(mappedBy = "user")
+//    List<Order> orders;
 
     // Tự động cập nhật khi tạo bản ghi
     @CreatedDate
