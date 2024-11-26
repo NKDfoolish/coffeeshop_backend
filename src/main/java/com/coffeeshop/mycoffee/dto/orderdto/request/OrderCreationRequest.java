@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderCreationRequest {
 
-    @NotBlank(message = "PaymentId is required")
+//    @NotBlank(message = "PaymentId is required")
     String paymentId;
 
     @NotNull(message = "Table is required")

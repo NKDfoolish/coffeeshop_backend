@@ -15,7 +15,7 @@ public class OrderResponse {
 
     String userId;
 
-    String paymentId;
+//    String paymentId;
 
     int table;
 

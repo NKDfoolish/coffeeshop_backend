@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /mycoffee
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/mycoffee?createDatabaseIfNotExist=true}
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    username: ${SPRING_DATASOURCE_USERNAME:duy}
+    password: ${SPRING_DATASOURCE_PASSWORD:07012k3.Nkd}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  signerKey: ${JWT_SIGNER_KEY:"+3v0xj1tiqSQmqsR7Vj16/urHtVFyMqSUhHW8WDSCR1VKZ5KDQnCQHa8DlRg7I8X"}
+  valid-duration: ${JWT_VALID_DURATION:3600} # in seconds
+  refreshable-duration: ${JWT_REFRESHABLE_DURATION:36000} # in seconds
+
+amazonProperties:
+  fullPath: ${AMAZON_PROPERTIES_FULL_PATH:https://coffeeshopuit.s3-ap-southeast-1.amazonaws.com/}
+  accessKey: ${AMAZON_PROPERTIES_ACCESS_KEY:AKIATFOIZDKUYFSA4JFU}
+  secretKey: ${AMAZON_PROPERTIES_SECRET_KEY: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}
+  bucketName: ${AMAZON_PROPERTIES_BUCKET_NAME:coffeeshopuit}
+
+springdoc:
+  swagger-ui:
+    path: swagger-ui
