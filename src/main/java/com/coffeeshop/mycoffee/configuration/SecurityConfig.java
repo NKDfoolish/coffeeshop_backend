@@ -42,6 +42,7 @@ public class SecurityConfig {
         "users/**",
         "roles/**",
         "permissions/**",
+        "/**"
     };
 
     @Value("${jwt.signerKey}")

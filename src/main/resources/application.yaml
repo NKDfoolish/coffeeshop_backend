@@ -31,3 +31,6 @@ amazonProperties:
 springdoc:
   swagger-ui:
     path: swagger-ui
+
+base_url: http://localhost:8080/mycoffee
+
