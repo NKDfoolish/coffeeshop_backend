@@ -99,7 +99,7 @@ public class OrderService {
                                 .quantity(orderDetail.getQuantity())
                                 .productId(orderDetail.getProduct().getId())
                                 .image(orderDetail.getProduct().getImageUrl())
-                                .price(orderDetail.getProduct().getPrice())
+                                .price(orderDetail.getProduct().getPrice() * orderDetail.getQuantity())
                                 .productName(orderDetail.getProduct().getName())
                                 .build();
                     }).collect(Collectors.toList()))

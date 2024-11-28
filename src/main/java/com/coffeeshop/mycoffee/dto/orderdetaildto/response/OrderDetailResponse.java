@@ -24,5 +24,4 @@ public class OrderDetailResponse {
     String image;
 
     float price;
-
 }
