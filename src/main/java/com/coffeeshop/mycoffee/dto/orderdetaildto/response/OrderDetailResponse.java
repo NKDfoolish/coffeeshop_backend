@@ -1,5 +1,6 @@
 package com.coffeeshop.mycoffee.dto.orderdetaildto.response;
 
+import com.coffeeshop.mycoffee.entity.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,4 +18,11 @@ public class OrderDetailResponse {
     int quantity;
 
     String productId;
+
+    String productName;
+
+    String image;
+
+    float price;
+
 }

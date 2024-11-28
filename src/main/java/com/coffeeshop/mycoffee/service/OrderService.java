@@ -98,6 +98,9 @@ public class OrderService {
                                 .orderId(orderDetail.getOrder().getId())
                                 .quantity(orderDetail.getQuantity())
                                 .productId(orderDetail.getProduct().getId())
+                                .image(orderDetail.getProduct().getImageUrl())
+                                .price(orderDetail.getProduct().getPrice())
+                                .productName(orderDetail.getProduct().getName())
                                 .build();
                     }).collect(Collectors.toList()))
                     .build();
