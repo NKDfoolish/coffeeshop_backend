@@ -78,6 +78,7 @@ public class OrderService {
 //                    .userId(order.getUser().getId())
                     .table(order.getTable())
 //                    .paymentId(order.getPayment().getId())
+                    .orderId(order.getId())
                     .build()
         ).toList();
     }
