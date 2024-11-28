@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 public class OrderResponse {
 
     String orderId;
-    String userId;
+//    String userId;
 
 //    String paymentId;
 

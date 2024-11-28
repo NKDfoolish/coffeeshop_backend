@@ -17,4 +17,6 @@ public class OrderUpdateRequest {
     String paymentId;
 
     Integer table;
+
+    Float totalPrice;
 }

@@ -97,6 +97,10 @@ public class OrderService {
             order.setTable(request.getTable());
         }
 
+        if (request.getTotalPrice() != null) {
+            order.setTotal_price(request.getTotalPrice());
+        }
+
         Order orderResult = orderRepository.save(order);
 
         return OrderResponse.builder()
