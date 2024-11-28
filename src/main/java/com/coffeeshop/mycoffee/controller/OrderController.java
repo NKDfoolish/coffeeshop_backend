@@ -69,4 +69,13 @@ public class OrderController {
                 .result("QR Codes have been generated")
                 .build();
     }
+
+    @Operation(summary = "Get all orders with details")
+    @GetMapping("/with-details")
+    public ApiResponse<List<OrderResponse>> getOrdersWithDetails() {
+        return ApiResponse.<List<OrderResponse>>builder()
+                .result(orderService.getOrdersWithDetails())
+                .build();
+    }
+
 }

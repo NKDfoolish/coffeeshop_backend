@@ -1,5 +1,6 @@
 package com.coffeeshop.mycoffee.service;
 
+import com.coffeeshop.mycoffee.dto.orderdetaildto.response.OrderDetailResponse;
 import com.coffeeshop.mycoffee.dto.orderdto.request.OrderCreationRequest;
 import com.coffeeshop.mycoffee.dto.orderdto.request.OrderUpdateRequest;
 import com.coffeeshop.mycoffee.dto.orderdto.response.OrderResponse;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +83,26 @@ public class OrderService {
                     .orderId(order.getId())
                     .build()
         ).toList();
+    }
+
+    public List<OrderResponse> getOrdersWithDetails() {
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream().map(order -> {
+            OrderResponse orderResponse = OrderResponse.builder()
+                    .orderId(order.getId())
+                    .table(order.getTable())
+                    .totalPrice(order.getTotal_price())
+                    .orderDetails(order.getOrderDetails().stream().map(orderDetail -> {
+                        return OrderDetailResponse.builder()
+                                .id(orderDetail.getId())
+                                .orderId(orderDetail.getOrder().getId())
+                                .quantity(orderDetail.getQuantity())
+                                .productId(orderDetail.getProduct().getId())
+                                .build();
+                    }).collect(Collectors.toList()))
+                    .build();
+            return orderResponse;
+        }).collect(Collectors.toList());
     }
 
 //    @PreAuthorize("hasRole('ADMIN')")
