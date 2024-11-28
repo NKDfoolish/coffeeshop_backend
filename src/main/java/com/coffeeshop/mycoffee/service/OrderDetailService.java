@@ -67,6 +67,7 @@ public class OrderDetailService {
                         .quantity(orderDetail.getQuantity())
                         .orderId(orderDetail.getOrder().getId())
                         .productId(orderDetail.getProduct().getId())
+                        .id(orderDetail.getId())
                         .build()).toList();
     }
 

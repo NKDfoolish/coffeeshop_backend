@@ -10,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderDetailResponse {
+    String id;
+
     String orderId;
 
     int quantity;
