@@ -24,10 +24,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_ENDPOINTS = {
-        "/users/**",
-        "/auth/**",
         "/images/products/**",
-        "/order/**",
         "api/auth/**",
         "/v3/**",
         "/swagger-ui/**",
@@ -36,13 +33,16 @@ public class SecurityConfig {
         "/webjars/**",
         "product/**",
         "category/**",
-        "order/**",
-        "order-detail/**",
-        "payment/**",
-        "users/**",
-        "roles/**",
-        "permissions/**",
-        "/**"
+    };
+
+    private static final String[] ENDPOINTS_ORDER_AUTH = {
+            "/users/**",
+            "/auth/**",
+    };
+
+    private static final String[] ENDPOINTS_ORDER_CUSTOMER = {
+            "order/**",
+            "order-detail/**",
     };
 
     @Value("${jwt.signerKey}")
@@ -60,8 +60,10 @@ public class SecurityConfig {
 //        httpSecurity.addFilterBefore(new IpCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.authorizeHttpRequests(request -> request
-                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+                .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
+                .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_AUTH).permitAll()
+                .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_CUSTOMER).permitAll()
+                .requestMatchers(HttpMethod.PUT, ENDPOINTS_ORDER_CUSTOMER).permitAll()
                 .requestMatchers("/test/**").permitAll()
                 .anyRequest().authenticated());
 

@@ -32,5 +32,5 @@ springdoc:
   swagger-ui:
     path: swagger-ui
 
-base_url: http://localhost:8080/mycoffee
+base_url: http://localhost:8080/mycoffee/swagger-ui/index.html
 
