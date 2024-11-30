@@ -30,6 +30,8 @@ public class OrderResponse {
 
     float totalPrice;
 
+    String status;
+
     String created_at;
 
     List<OrderDetailResponse> orderDetails;

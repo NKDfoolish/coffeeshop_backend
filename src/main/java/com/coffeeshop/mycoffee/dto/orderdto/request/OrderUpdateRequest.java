@@ -19,4 +19,6 @@ public class OrderUpdateRequest {
     Integer table;
 
     Float totalPrice;
+
+    String status;
 }

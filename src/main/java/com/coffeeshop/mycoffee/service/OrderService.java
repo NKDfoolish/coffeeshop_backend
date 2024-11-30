@@ -54,6 +54,7 @@ public class OrderService {
 //                .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_NOT_EXISTED));
 
         Order order = orderMapper.toOrder(request);
+        order.setStatus("NONE");
 //        order.setUser(user);
 //        order.setPayment(payment);
 
@@ -68,6 +69,7 @@ public class OrderService {
 //                .paymentId(payment.getId())
                 .orderId(order.getId())
                 .table(order.getTable())
+                .status(order.getStatus())
                 .totalPrice(order.getTotal_price())
                 .build();
 
@@ -75,7 +77,7 @@ public class OrderService {
 
 //    @PreAuthorize("hasRole('ADMIN')")
     public List<OrderResponse> getOrders(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         return orderRepository.findAll().stream().map(order ->
             OrderResponse.builder()
                     .totalPrice(order.getTotal_price())
@@ -83,6 +85,7 @@ public class OrderService {
                     .table(order.getTable())
 //                    .paymentId(order.getPayment().getId())
                     .orderId(order.getId())
+                    .status(order.getStatus())
                     .created_at(order.getCreatedAt().format(formatter))
                     .build()
         ).toList();
@@ -95,6 +98,7 @@ public class OrderService {
                     .orderId(order.getId())
                     .table(order.getTable())
                     .totalPrice(order.getTotal_price())
+                    .status(order.getStatus())
                     .created_at(order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")))
                     .orderDetails(order.getOrderDetails().stream().map(orderDetail -> {
                         return OrderDetailResponse.builder()
@@ -131,6 +135,10 @@ public class OrderService {
             order.setTotal_price(request.getTotalPrice());
         }
 
+        if (request.getStatus() != null) {
+            order.setStatus(request.getStatus());
+        }
+
         Order orderResult = orderRepository.save(order);
 
         return OrderResponse.builder()
@@ -138,6 +146,7 @@ public class OrderService {
                 .table(orderResult.getTable())
 //                .userId(orderResult.getUser().getId())
                 .totalPrice(order.getTotal_price())
+                .status(order.getStatus())
                 .build();
     }
 

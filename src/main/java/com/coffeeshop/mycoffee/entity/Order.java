@@ -29,6 +29,7 @@ public class Order {
 
     int used_point = 0;
     float total_price;
+    String status = "NONE";
 
     @OneToOne
     @JoinColumn(name = "payment_id")
