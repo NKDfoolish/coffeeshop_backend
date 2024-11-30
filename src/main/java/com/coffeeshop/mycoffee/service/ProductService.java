@@ -48,6 +48,12 @@ public class ProductService {
     @NonFinal
     private String BUCKET_NAME;
 
+    public List<ProductResponse> searchProducts(String keyword) {
+        return productRepository.searchProductsByName(keyword).stream()
+                .map(productMapper::toProductResponse)
+                .toList();
+    }
+
 
 //    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponse createProduct(ProductCreationRequest request) {

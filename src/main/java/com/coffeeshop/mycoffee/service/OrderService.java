@@ -95,6 +95,7 @@ public class OrderService {
                     .orderId(order.getId())
                     .table(order.getTable())
                     .totalPrice(order.getTotal_price())
+                    .created_at(order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")))
                     .orderDetails(order.getOrderDetails().stream().map(orderDetail -> {
                         return OrderDetailResponse.builder()
                                 .id(orderDetail.getId())

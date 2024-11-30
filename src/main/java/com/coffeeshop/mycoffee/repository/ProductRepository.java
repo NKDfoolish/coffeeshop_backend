@@ -15,4 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     // Tìm tất cả các Category chưa bị xóa mềm
     @Query("SELECT c FROM Product c WHERE c.deletedAt IS NULL")
     List<Product> findAllActiveCategories();
+
+    @Query("SELECT p FROM Product p WHERE p.name LIKE %:keyword% AND p.deletedAt IS NULL")
+    List<Product> searchProductsByName(String keyword);
 }

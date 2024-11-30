@@ -34,6 +34,14 @@ public class ProductController {
 
     ProductService productService;
 
+    @Operation(summary = "Search products by name")
+    @GetMapping("/search")
+    public ApiResponse<List<ProductResponse>> searchProducts(@RequestParam String keyword) {
+        return ApiResponse.<List<ProductResponse>>builder()
+                .result(productService.searchProducts(keyword))
+                .build();
+    }
+
     @Operation(summary = "Create a new product")
     @PostMapping
     ApiResponse<ProductResponse> createProduct(@RequestBody @Valid ProductCreationRequest request) throws IOException {
