@@ -23,6 +23,9 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    @Value("${source_fe}")
+    private String SOURCE_FE;
+
     private static final String[] PUBLIC_ENDPOINTS = {
         "/images/products/**",
         "api/auth/**",
@@ -81,7 +84,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedOrigin(SOURCE_FE);
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
 
