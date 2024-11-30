@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class OrderService {
     OrderMapper orderMapper;
     UserRepository userRepository;
     PaymentRepository paymentRepository;
+    SimpMessagingTemplate messagingTemplate;
 
 //    @PreAuthorize("hasRole('ADMIN')")
     public OrderResponse createOrder(OrderCreationRequest request){
@@ -60,6 +62,7 @@ public class OrderService {
 
         try {
             order = orderRepository.save(order);
+            messagingTemplate.convertAndSend("/topic/orders", order);
         } catch (DataIntegrityViolationException e){
             throw new AppException(ErrorCode.ORDER_EXISTED);
         }
