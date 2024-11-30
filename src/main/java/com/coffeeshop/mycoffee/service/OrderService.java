@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,6 +75,7 @@ public class OrderService {
 
 //    @PreAuthorize("hasRole('ADMIN')")
     public List<OrderResponse> getOrders(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return orderRepository.findAll().stream().map(order ->
             OrderResponse.builder()
                     .totalPrice(order.getTotal_price())
@@ -81,6 +83,7 @@ public class OrderService {
                     .table(order.getTable())
 //                    .paymentId(order.getPayment().getId())
                     .orderId(order.getId())
+                    .created_at(order.getCreatedAt().format(formatter))
                     .build()
         ).toList();
     }
