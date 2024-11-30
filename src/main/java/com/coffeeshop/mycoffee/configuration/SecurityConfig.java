@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -62,7 +63,10 @@ public class SecurityConfig {
 
 //        httpSecurity.addFilterBefore(new IpCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        httpSecurity.authorizeHttpRequests(request -> request
+
+        httpSecurity
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(request -> request
                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
                 .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_AUTH).permitAll()
                 .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_CUSTOMER).permitAll()
