@@ -39,11 +39,6 @@ public class OrderController {
                 .build();
     }
 
-    @GetMapping(value = "/notifications", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter getOrderNotifications() {
-        return orderService.registerEmitter(); // Đăng ký emitter cho client
-    }
-
     @Operation(summary = "Get all orders")
     @GetMapping
     ApiResponse<List<OrderResponse>> getOrders(){

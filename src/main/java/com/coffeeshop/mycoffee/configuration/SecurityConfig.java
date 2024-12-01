@@ -70,9 +70,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
                 .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_AUTH).permitAll()
                 .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_CUSTOMER).permitAll()
-                .requestMatchers(HttpMethod.GET, "/order/notifications").permitAll()
                 .requestMatchers(HttpMethod.PUT, ENDPOINTS_ORDER_CUSTOMER).permitAll()
-                        .requestMatchers("/test/**").permitAll()
+                .requestMatchers("/test/**").permitAll()
+                .requestMatchers("/ws/orders").permitAll()
                 .anyRequest().authenticated());
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer

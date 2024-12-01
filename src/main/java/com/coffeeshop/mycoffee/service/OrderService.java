@@ -1,5 +1,6 @@
 package com.coffeeshop.mycoffee.service;
 
+import com.coffeeshop.mycoffee.configuration.WebSocketHandler;
 import com.coffeeshop.mycoffee.dto.orderdetaildto.response.OrderDetailResponse;
 import com.coffeeshop.mycoffee.dto.orderdto.request.OrderCreationRequest;
 import com.coffeeshop.mycoffee.dto.orderdto.request.OrderUpdateRequest;
@@ -44,10 +45,10 @@ public class OrderService {
     OrderMapper orderMapper;
     UserRepository userRepository;
     PaymentRepository paymentRepository;
-    ApplicationEventPublisher eventPublisher;
 
-    // Map để lưu SseEmitter cho mỗi client đang kết nối
-    private final Map<String, SseEmitter> emitters = new HashMap<>();
+    WebSocketHandler webSocketHandler;
+
+
 
 
 //    @PreAuthorize("hasRole('ADMIN')")
@@ -81,24 +82,6 @@ public class OrderService {
                 .totalPrice(order.getTotal_price())
                 .build();
 
-    }
-
-    // Phát thông báo SSE cho các client đang kết nối
-    private void sendOrderCreatedNotification(Order order) {
-        emitters.forEach((key, emitter) -> {
-            try {
-                emitter.send(SseEmitter.event().name("newOrder").data("New order created: Order ID " + order.getId()));
-            } catch (IOException e) {
-                emitter.completeWithError(e);
-            }
-        });
-    }
-
-    // Phương thức để đăng ký một emitter cho một client
-    public SseEmitter registerEmitter() {
-        SseEmitter emitter = new SseEmitter();
-        emitters.put(UUID.randomUUID().toString(), emitter);
-        return emitter;
     }
 
 //    @PreAuthorize("hasRole('ADMIN')")
@@ -166,8 +149,7 @@ public class OrderService {
         }
 
         Order orderResult = orderRepository.save(order);
-        // Gửi sự kiện SSE khi có order mới update
-        sendOrderCreatedNotification(order);
+        webSocketHandler.sendMessageToAll("New order created");
 
         return OrderResponse.builder()
 //                .paymentId(orderResult.getPayment().getId())
