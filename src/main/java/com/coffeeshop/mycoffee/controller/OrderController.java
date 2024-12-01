@@ -12,8 +12,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -33,6 +37,11 @@ public class OrderController {
         return ApiResponse.<OrderResponse>builder()
                 .result(orderService.createOrder(request))
                 .build();
+    }
+
+    @GetMapping(value = "/notifications", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter getOrderNotifications() {
+        return orderService.registerEmitter(); // Đăng ký emitter cho client
     }
 
     @Operation(summary = "Get all orders")

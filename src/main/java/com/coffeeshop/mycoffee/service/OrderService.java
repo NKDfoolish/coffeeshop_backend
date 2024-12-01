@@ -6,7 +6,6 @@ import com.coffeeshop.mycoffee.dto.orderdto.request.OrderUpdateRequest;
 import com.coffeeshop.mycoffee.dto.orderdto.response.OrderResponse;
 import com.coffeeshop.mycoffee.entity.Order;
 import com.coffeeshop.mycoffee.entity.Payment;
-import com.coffeeshop.mycoffee.entity.User;
 import com.coffeeshop.mycoffee.exception.AppException;
 import com.coffeeshop.mycoffee.exception.ErrorCode;
 import com.coffeeshop.mycoffee.mapper.OrderMapper;
@@ -19,17 +18,20 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +44,11 @@ public class OrderService {
     OrderMapper orderMapper;
     UserRepository userRepository;
     PaymentRepository paymentRepository;
-    SimpMessagingTemplate messagingTemplate;
+    ApplicationEventPublisher eventPublisher;
+
+    // Map để lưu SseEmitter cho mỗi client đang kết nối
+    private final Map<String, SseEmitter> emitters = new HashMap<>();
+
 
 //    @PreAuthorize("hasRole('ADMIN')")
     public OrderResponse createOrder(OrderCreationRequest request){
@@ -62,7 +68,9 @@ public class OrderService {
 
         try {
             order = orderRepository.save(order);
-            messagingTemplate.convertAndSend("/topic/orders", order);
+            // Gửi sự kiện SSE khi có order mới
+            sendOrderCreatedNotification(order);
+
         } catch (DataIntegrityViolationException e){
             throw new AppException(ErrorCode.ORDER_EXISTED);
         }
@@ -76,6 +84,24 @@ public class OrderService {
                 .totalPrice(order.getTotal_price())
                 .build();
 
+    }
+
+    // Phát thông báo SSE cho các client đang kết nối
+    private void sendOrderCreatedNotification(Order order) {
+        emitters.forEach((key, emitter) -> {
+            try {
+                emitter.send(SseEmitter.event().name("newOrder").data("New order created: Order ID " + order.getId()));
+            } catch (IOException e) {
+                emitter.completeWithError(e);
+            }
+        });
+    }
+
+    // Phương thức để đăng ký một emitter cho một client
+    public SseEmitter registerEmitter() {
+        SseEmitter emitter = new SseEmitter();
+        emitters.put(UUID.randomUUID().toString(), emitter);
+        return emitter;
     }
 
 //    @PreAuthorize("hasRole('ADMIN')")

@@ -70,8 +70,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
                 .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_AUTH).permitAll()
                 .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_CUSTOMER).permitAll()
+                .requestMatchers(HttpMethod.GET, ENDPOINTS_ORDER_CUSTOMER).permitAll()
                 .requestMatchers(HttpMethod.PUT, ENDPOINTS_ORDER_CUSTOMER).permitAll()
-                .requestMatchers("/test/**").permitAll()
+                        .requestMatchers("/test/**").permitAll()
                 .anyRequest().authenticated());
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
@@ -80,6 +81,8 @@ public class SecurityConfig {
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
+        httpSecurity.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
 
 
         return httpSecurity.build();
