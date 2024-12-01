@@ -142,6 +142,7 @@ public class OrderService {
 
         if (request.getTotalPrice() != null) {
             order.setTotal_price(request.getTotalPrice());
+            webSocketHandler.sendMessageToAll("New order created");
         }
 
         if (request.getStatus() != null) {
@@ -149,7 +150,7 @@ public class OrderService {
         }
 
         Order orderResult = orderRepository.save(order);
-        webSocketHandler.sendMessageToAll("New order created");
+
 
         return OrderResponse.builder()
 //                .paymentId(orderResult.getPayment().getId())
