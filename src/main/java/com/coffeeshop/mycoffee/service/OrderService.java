@@ -142,7 +142,7 @@ public class OrderService {
 
         if (request.getTotalPrice() != null) {
             order.setTotal_price(request.getTotalPrice());
-            webSocketHandler.sendMessageToAll("New order created");
+//            webSocketHandler.sendMessageToAll("New order created");
         }
 
         if (request.getStatus() != null) {

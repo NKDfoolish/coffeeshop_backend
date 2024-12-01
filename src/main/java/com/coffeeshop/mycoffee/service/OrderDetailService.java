@@ -1,5 +1,6 @@
 package com.coffeeshop.mycoffee.service;
 
+import com.coffeeshop.mycoffee.configuration.WebSocketHandler;
 import com.coffeeshop.mycoffee.dto.orderdetaildto.request.OrderDetailCreationRequest;
 import com.coffeeshop.mycoffee.dto.orderdetaildto.request.OrderDetailUpdateRequest;
 import com.coffeeshop.mycoffee.dto.orderdetaildto.response.OrderDetailResponse;
@@ -32,6 +33,7 @@ public class OrderDetailService {
     OrderDetailMapper orderDetailMapper;
     OrderRepository orderRepository;
     ProductRepository productRepository;
+    WebSocketHandler webSocketHandler;
 
 //    @PreAuthorize("hasRole('ADMIN')")
     public OrderDetailResponse createOrderDetail(OrderDetailCreationRequest request){
@@ -49,6 +51,7 @@ public class OrderDetailService {
 
         try {
             orderDetail = orderDetailRepository.save(orderDetail);
+            webSocketHandler.sendMessageToAll("New order detail created");
         } catch (DataIntegrityViolationException e) {
             throw new AppException(ErrorCode.ORDER_DETAIL_NOT_EXISTED);
         }
