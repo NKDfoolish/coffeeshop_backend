@@ -68,9 +68,6 @@ public class OrderService {
 
         try {
             order = orderRepository.save(order);
-            // Gửi sự kiện SSE khi có order mới
-            sendOrderCreatedNotification(order);
-
         } catch (DataIntegrityViolationException e){
             throw new AppException(ErrorCode.ORDER_EXISTED);
         }
@@ -169,6 +166,8 @@ public class OrderService {
         }
 
         Order orderResult = orderRepository.save(order);
+        // Gửi sự kiện SSE khi có order mới update
+        sendOrderCreatedNotification(order);
 
         return OrderResponse.builder()
 //                .paymentId(orderResult.getPayment().getId())

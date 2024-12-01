@@ -70,7 +70,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
                 .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_AUTH).permitAll()
                 .requestMatchers(HttpMethod.POST, ENDPOINTS_ORDER_CUSTOMER).permitAll()
-                .requestMatchers(HttpMethod.GET, ENDPOINTS_ORDER_CUSTOMER).permitAll()
+                .requestMatchers(HttpMethod.GET, "/mycoffee/order/notifications").permitAll()
                 .requestMatchers(HttpMethod.PUT, ENDPOINTS_ORDER_CUSTOMER).permitAll()
                         .requestMatchers("/test/**").permitAll()
                 .anyRequest().authenticated());
