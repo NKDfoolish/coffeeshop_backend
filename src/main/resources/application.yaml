@@ -34,4 +34,4 @@ springdoc:
 
 base_url: http://localhost:8080/mycoffee/swagger-ui/index.html
 
-source_fe: http://localhost:3000
+source_fe: http://chillguys.fun:3000
