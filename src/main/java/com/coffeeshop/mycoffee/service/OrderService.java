@@ -18,7 +18,9 @@ import com.google.zxing.WriterException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -47,6 +49,10 @@ public class OrderService {
     PaymentRepository paymentRepository;
 
     WebSocketHandler webSocketHandler;
+
+    @Value("${source_fe}")
+    @NonFinal
+    String SOURCE_FE;
 
 
 
@@ -173,7 +179,7 @@ public class OrderService {
     }
 
     public void generateTableQRCode(int tableNumber) {
-        String qrCodeText = "https://yourwebsite.com/menu?table=" + tableNumber;
+        String qrCodeText = SOURCE_FE + "/menu?table=" + tableNumber;
         String qrCodePath = "images/qrcodes/table_" + tableNumber + ".png";
         try {
             // Create directories if they do not exist

@@ -30,7 +30,6 @@ import java.util.List;
 public class OrderDetailService {
 
     OrderDetailRepository orderDetailRepository;
-    OrderDetailMapper orderDetailMapper;
     OrderRepository orderRepository;
     ProductRepository productRepository;
     WebSocketHandler webSocketHandler;
