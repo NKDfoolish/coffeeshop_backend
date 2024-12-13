@@ -179,7 +179,7 @@ public class OrderService {
     }
 
     public void generateTableQRCode(int tableNumber) {
-        String qrCodeText = SOURCE_FE + "/menu?table=" + tableNumber;
+        String qrCodeText = "http://chillguys.fun" + "/menu?table=" + tableNumber;
         String qrCodePath = "images/qrcodes/table_" + tableNumber + ".png";
         try {
             // Create directories if they do not exist
