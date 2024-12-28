@@ -10,8 +10,8 @@ spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/mycoffee?createDatabaseIfNotExist=true}
     driverClassName: "com.mysql.cj.jdbc.Driver"
-    username: ${SPRING_DATASOURCE_USERNAME:duy}
-    password: ${SPRING_DATASOURCE_PASSWORD:07012k3.Nkd}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
   jpa:
     hibernate:
       ddl-auto: update
